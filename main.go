@@ -90,6 +90,13 @@ func server() {
 
 	messageRouter.Mount()
 
+	sosmedRepo := repository.NewSocialMediaRepository(gorm)
+	sosmedSvc := service.NewSocialMediaService(sosmedRepo)
+	sosmedHdl := handler.NewSocialMediaHandler(sosmedSvc)
+	sosmedRouter := router.NewSocialMediaRouter(usersGroup, sosmedHdl)
+
+	sosmedRouter.Mount()
+
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	g.Run(":3000")
